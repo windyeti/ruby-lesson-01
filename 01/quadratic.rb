@@ -16,8 +16,8 @@ def get_roots(a:, b:, c:)
   if d == 0
     result[:x12] = quadr_formula(a,b,c)
   elsif d > 0
-    result[:x1] = quadr_formula(a,b,c,d)
-    result[:x2] = quadr_formula(a,b,c,-d)
+    result[:x1] = quadr_formula(a,b,c,Math.sqrt(d))
+    result[:x2] = quadr_formula(a,b,c,-Math.sqrt(d))
   else
     result["D"] = "D < 0, корней нет."
   end
@@ -29,7 +29,7 @@ def get_D(a, b, c)
 end
 
 def quadr_formula(a,b,c,d = 0)
-  (-b + d) / 2 * a
+  (-1*b + d) / (2 * a)
 end
 
 def print_result
