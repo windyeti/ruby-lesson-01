@@ -10,38 +10,36 @@ def user_input
 end
 
 def get_roots(a:, b:, c:)
-  result = {}
-  d = get_D(a, b, c)
+  roots = []
+  d = get_d(a, b, c).to_f
 
   if d == 0
-    result[:x12] = quadr_formula(a,b,c)
+    roots << quadr_formula(a,b,c)
   elsif d > 0
-    result[:x1] = quadr_formula(a,b,c,Math.sqrt(d))
-    result[:x2] = quadr_formula(a,b,c,-Math.sqrt(d))
-  else
-    result["D"] = "D < 0, корней нет."
+    roots << quadr_formula(a,b,c,Math.sqrt(d))
+    roots << quadr_formula(a,b,c,-Math.sqrt(d))
   end
-  result
+  roots
 end
 
-def get_D(a, b, c)
-  b**2 - 4*a*c
+def get_d(a, b, c)
+  b**2 - 4 * a * c
 end
 
 def quadr_formula(a,b,c,d = 0)
-  (-1*b + d) / (2 * a)
+  (-b + d) / (2.0 * a)
 end
 
-def print_result
-  roots = get_roots user_input
-  roots_for_print = roots.map do |key, value|
-    if key != 'D'
-      "#{key} = #{value}"
-    else
-      "#{value}"
-    end
+def print_result(roots)
+  message = "Решение: "
+  if roots.length == 0
+    message += "D < 0, корней нет."
+  else
+    message += roots.each_with_index.map { |el, i| "x#{i + 1} = #{el}" }.join(", ")
   end
-  puts "Решение: #{roots_for_print.join(", ")}"
+  puts "#{message}"
 end
 
-print_result
+input = user_input
+roots = get_roots(input)
+print_result(roots)
