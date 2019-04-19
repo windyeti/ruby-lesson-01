@@ -17,10 +17,10 @@ def ideal_weight(height)
   height - 110
 end
 
-def print_pretty_weight (name: input[:name], height: input[:height])
+def print_pretty_weight(name:, height:)
   weight = ideal_weight(height)
   puts "#{name}! Ваш идеальный вес #{weight}кг"
 end
 
 input = user_input
-print_pretty_weight(input)
+print_pretty_weight(name: input[:name], height: input[:height])
