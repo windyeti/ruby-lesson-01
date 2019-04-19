@@ -1,9 +1,10 @@
 def user_input
   puts "Введите размеры трех сторон через пробел\nНапример, 12 7 19"
-  size_sides = gets.split(" ").map { |s| s.to_f }.sort
+  gets.split(" ").map { |s| s.to_f }.sort
 end    
 
 def get_message_about_triangel(sides)
+  sides.sort!
   message = []
 
   if right_angel?(sides)

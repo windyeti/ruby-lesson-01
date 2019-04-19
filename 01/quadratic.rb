@@ -14,10 +14,10 @@ def get_roots(a:, b:, c:)
   d = get_d(a, b, c).to_f
 
   if d == 0
-    roots << quadr_formula(a,b,c)
+    roots << quadr_formula(a, b, c)
   elsif d > 0
-    roots << quadr_formula(a,b,c,Math.sqrt(d))
-    roots << quadr_formula(a,b,c,-Math.sqrt(d))
+    roots << quadr_formula(a, b, c, Math.sqrt(d))
+    roots << quadr_formula(a, b, c, -Math.sqrt(d))
   end
   roots
 end
@@ -26,7 +26,7 @@ def get_d(a, b, c)
   b**2 - 4 * a * c
 end
 
-def quadr_formula(a,b,c,d = 0)
+def quadr_formula(a, b, c, d = 0)
   (-b + d) / (2.0 * a)
 end
 

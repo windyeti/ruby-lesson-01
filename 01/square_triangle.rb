@@ -8,7 +8,7 @@ def user_input
   triangle
 end
 
-def get_area_triangle(base:, height:)
+def get_area_triangle(base: input[:base], height: input[:height])
   0.5 * base * height
 end
 
