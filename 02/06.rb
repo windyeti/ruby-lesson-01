@@ -1,26 +1,26 @@
 goods = {}
 
-def print_list_good(goods)
-  puts "Все товары: #{goods}"
-  list_price = get_list_prices(goods)
-  puts "Стоимость: #{list_price.map { |g| "#{g[0]} = #{g[1]}" }.join(', ')}"
-  puts "Стоимость всех товаров: #{total_price(list_price)}"
+def print_list_good(goods_with_price, total_price)
+  puts "Все товары: #{goods_with_price}"
+  puts "Стоимость всех товаров: #{total_price}"
 end
 
-def get_list_prices(goods)
-  goods.each.map { |g| [g[0], g[1][:price] * g[1][:quantity]] }
+def get_goods_with_price(goods)
+  goods.each { |name, value| goods[name][:cost] = value[:price] * value[:quantity] }
 end
 
-def total_price(list_price)
-  list_price.reduce(0) { |acc, g| acc + g[1] }
+def get_total_price(goods_with_price)
+  goods_with_price.reduce(0) { |acc, (key, value)| acc + value[:cost] }
 end
 
 loop do
   puts "Введите название товара:"
   name = gets.chomp
 
-  if name == "stop"
-    print_list_good(goods)
+  if name.dowcase == "stop"
+    goods_with_price = get_goods_with_price(goods)
+    total_price = get_total_price(goods_with_price)
+    print_list_good(goods_with_price, total_price)
     break
   end
 

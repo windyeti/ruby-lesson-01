@@ -1,8 +1,1 @@
-i = 10
-result = []
-while i <= 100 do
-  result << i
-  i += 5
-end
-
-puts "#{result}"
+puts (10..100).step(5).to_a.join(", ")

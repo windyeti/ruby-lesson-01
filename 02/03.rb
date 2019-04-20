@@ -1,9 +1,8 @@
-n = 3
-fibo = [0, 1]
+current_max = 1
+sequence_fiboanachi = [0, 1]
 
-until n > 100 do
-  fibo << (fibo.last + fibo[-2])
-  n += 1
+while (current_max = sequence_fiboanachi[-1] + sequence_fiboanachi[-2]) <= 100 do
+  sequence_fiboanachi << current_max
 end
 
-puts "#{fibo} >>> #{fibo.size}"
+puts sequence_fiboanachi.join(", ")
