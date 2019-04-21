@@ -6,13 +6,13 @@ end
 def get_numberic_day(day:, month:, year:)
   days_amount = day
   days_amount += get_day_from_month(month)
-  days_amount += leap_year?(year) && month > 1 ? 1 : 0
+  days_amount += 1 if leap_year?(year) && month > 1
 end
 
 def get_day_from_month(month)
   month -= 1
   months_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-  months_days.take(month).reduce { |acc, days_amount| acc + days_amount }
+  months_days.take(month).reduce(0, &:+)
 end
 
 def leap_year?(year)
