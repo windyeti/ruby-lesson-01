@@ -14,7 +14,7 @@ def get_months(amount)
     december: 31
   }
 
-  months_days.each { |months_and_days| puts "#{months_and_days[0]}" if months_and_days[1] == amount }
+  months_days.each { |month, amount_days| puts month if amount_days == amount }
 end
 
 get_months(30)

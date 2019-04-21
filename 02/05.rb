@@ -4,34 +4,18 @@ def input_date
 end
 
 def get_numberic_day(day:, month:, year:)
-  days_amount = []
-  days_amount[0] = day
-  days_amount[1] = get_day_from_month(month)
-  days_amount[2] = long_year?(year) ? 1 : 0
-  days_amount.reduce { |acc, i| acc + i }
+  days_amount = day
+  days_amount += get_day_from_month(month)
+  days_amount += leap_year?(year) && month > 1 ? 1 : 0
 end
 
 def get_day_from_month(month)
-  days = 0
-  months_days = {
-    january: 31,
-    february: 28,
-    march: 31,
-    april: 30,
-    may: 31,
-    june: 30,
-    july: 31,
-    august: 31,
-    september: 30,
-    october: 31,
-    november: 30,
-    december: 31
-  }
-  months_days.to_a.each_with_index.map {|v, i| days += v[1] if i < month - 1 }
-  days
+  month -= 1
+  months_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+  months_days.take(month).reduce { |acc, days_amount| acc + days_amount }
 end
 
-def long_year?(year)
+def leap_year?(year)
   (year % 4 == 0 && year % 100 != 0) || year % 400 == 0
 end
 

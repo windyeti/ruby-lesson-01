@@ -17,12 +17,7 @@ loop do
   puts "Введите название товара:"
   name = gets.chomp
 
-  if name.dowcase == "stop"
-    goods_with_price = get_goods_with_price(goods)
-    total_price = get_total_price(goods_with_price)
-    print_list_good(goods_with_price, total_price)
-    break
-  end
+  break if name.downcase == "stop"
 
   goods[name] = {}
   puts "Введите цена за единицу товара:"
@@ -30,3 +25,7 @@ loop do
   puts "Введите количество товара:"
   goods[name][:quantity] = gets.chomp.to_i
 end
+
+goods_with_price = get_goods_with_price(goods)
+total_price = get_total_price(goods_with_price)
+print_list_good(goods_with_price, total_price)
