@@ -22,7 +22,7 @@ class Train
 
   def go
     self.speed = 5
-    # убрать поезд из списка станции
+    @route.stations.each { |station| station.trains.delete(self) }
   end
 
   def increment_wagon
