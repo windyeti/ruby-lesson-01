@@ -58,6 +58,6 @@ class Train
   end
 
   def previous_station
-    @route.stations[@current_index_station - 1] if @current_index_station > 0``
+    @route.stations[@current_index_station - 1] if @current_index_station > 0
   end
 end
