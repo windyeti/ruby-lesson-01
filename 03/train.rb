@@ -11,7 +11,7 @@ class Train
     @speed += speed
   end
 
-  def speed_down
+  def speed_down(speed)
     @speed -= speed
     @speed = 0 if @speed < 0
   end
@@ -58,6 +58,6 @@ class Train
   end
 
   def previous_station
-    @route.stations[@current_index_station - 1] if @current_index_station - 1 >= 0
+    @route.stations[@current_index_station - 1] if @current_index_station > 0``
   end
 end
