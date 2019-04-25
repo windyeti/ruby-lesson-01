@@ -1,11 +1,5 @@
 class Train
-  attr_reader :speed, :wagons, :number
-
-  def initialize(number, type, wagons)
-    @number = number
-    @type = type
-    @wagons = wagons
-  end
+  attr_reader :number
 
   def speed_up(speed)
     @speed += speed
@@ -20,12 +14,12 @@ class Train
     @speed = 0
   end
 
-  def increment_wagon
-    @wagons += 1 if @speed == 0
+  def add_wagon(wagon)
+    @wagons << wagon if wagon.type == self.type
   end
 
-  def decrement_wagon
-    @wagons -= 1 if @speed == 0 && wagons > 0
+  def delete_wagon
+    @wagons.pop
   end
 
   def route=(route)
@@ -49,6 +43,17 @@ class Train
     @current_index_station -= 1
   end
 
+  def type
+    self.class::TYPE
+  end
+
+  # protected
+
+  def initialize(number, wagons)
+    @number = number
+    @wagons = []
+  end
+
   def current_station
     @route.stations[@current_index_station]
   end
@@ -60,4 +65,11 @@ class Train
   def previous_station
     @route.stations[@current_index_station - 1] if @current_index_station > 0
   end
+
+  # private
+
+  # изменение speed и количества вагонов делается другими методпами,
+  # то есть обращение speed и wagons напрямую из других мест не нужно
+
+  attr_reader :speed, :wagons
 end
