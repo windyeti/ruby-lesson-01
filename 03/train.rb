@@ -1,18 +1,5 @@
 class Train
-  attr_reader :number
-
-  def speed_up(speed)
-    @speed += speed
-  end
-
-  def speed_down(speed)
-    @speed -= speed
-    @speed = 0 if @speed < 0
-  end
-
-  def stop
-    @speed = 0
-  end
+  attr_reader :number, :route, :wagons
 
   def add_wagon(wagon)
     @wagons << wagon if wagon.type == self.type
@@ -47,13 +34,9 @@ class Train
     self.class::TYPE
   end
 
-  # protected
-
-  def initialize(number, wagons)
-    @number = number
-    @wagons = []
-  end
-
+  protected
+  # эти методы используются наследниками внутри классов для премещения по станциям,
+  # но нигде не вызываются вне классов
   def current_station
     @route.stations[@current_index_station]
   end
@@ -66,10 +49,30 @@ class Train
     @route.stations[@current_index_station - 1] if @current_index_station > 0
   end
 
-  # private
+  private
 
-  # изменение speed и количества вагонов делается другими методпами,
-  # то есть обращение speed и wagons напрямую из других мест не нужно
+  # изменение speed и количества вагонов делается другими методами,
+  # то есть обращение speed напрямую из других мест не востребованно
+  # в рамках этого задания
 
-  attr_reader :speed, :wagons
+  attr_reader :speed
+
+  def initialize(number)
+    @number = number
+    @wagons = []
+  end
+
+  def speed_up(speed)
+    @speed += speed
+  end
+
+  def speed_down(speed)
+    @speed -= speed
+    @speed = 0 if @speed < 0
+  end
+
+  def stop
+    @speed = 0
+  end
+
 end

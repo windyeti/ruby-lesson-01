@@ -3,7 +3,8 @@ class PassengerTrain < Train
 
   protected
 
-  def initialize(number, wagons)
-    super(number, wagons)
+  # так как пока нет наследников, а доступ к инициализвции извне вреден
+  def initialize(number)
+    super(number)
   end
 end

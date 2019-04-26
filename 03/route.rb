@@ -1,5 +1,5 @@
 class Route
-  attr_reader :stations
+  attr_reader :stations, :start_point, :end_point
 
   def add_station(station)
     @stations.insert(1, station)
@@ -10,13 +10,11 @@ class Route
   end
 
   def show_stations
-    @stations.each { |station| puts station.name }
+    @stations.map {|station| station.name}.join(" <> ")
   end
 
   private
-
-  attr_reader :start_point, :end_point
-
+  # только этот метод не вызывается вне
   def initialize(start_point, end_point)
     @start_point = start_point
     @end_point = end_point
