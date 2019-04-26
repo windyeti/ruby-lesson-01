@@ -1,40 +1,40 @@
 class RailsRoad
   attr_reader :stations, :trains, :routes
 
-  def seed
-    # создадим пару станций
-    self.add_station("Bak")
-    self.add_station("Nem")
-    self.add_station("Tre")
-    self.add_station("Set")
+  # def seed
+  #   # создадим пару станций
+  #   self.add_station("Bak")
+  #   self.add_station("Nem")
+  #   self.add_station("Tre")
+  #   self.add_station("Set")
 
-    # создадим маршрут
-    self.add_route("Bak", "Set")
+  #   # создадим маршрут
+  #   self.add_route("Bak", "Set")
 
-    # создадим поезд Cargo
-    self.add_train(311, 'cargo')
-    self.add_train(254, 'passenger')
+  #   # создадим поезд Cargo
+  #   self.add_train(311, 'cargo')
+  #   self.add_train(254, 'passenger')
 
-    # добавить вагон
-    self.add_wagon_to_train("254", 'passenger')
-    self.add_wagon_to_train("254", 'passenger')
-    self.add_wagon_to_train("254", 'passenger')
-    self.add_wagon_to_train("311", 'cargo')
-    self.delete_wagon_from_train("254")
+  #   # добавить вагон
+  #   self.add_wagon_to_train("254", 'passenger')
+  #   self.add_wagon_to_train("254", 'passenger')
+  #   self.add_wagon_to_train("254", 'passenger')
+  #   self.add_wagon_to_train("311", 'cargo')
+  #   self.delete_wagon_from_train("254")
 
-    # добавить станцию в маршрут
-    self.add_station_into_route("0", "Tre")
-    self.add_station_into_route("0", "Nem")
+  #   # добавить станцию в маршрут
+  #   self.add_station_into_route("0", "Tre")
+  #   self.add_station_into_route("0", "Nem")
 
-    # удалить станцию из маршрута
-    self.delete_station_in_route("0", "Tre")
+  #   # удалить станцию из маршрута
+  #   self.delete_station_in_route("0", "Tre")
 
-    # добавить маршрут поезду
-    self.add_route_to_train("0", "311")
+  #   # добавить маршрут поезду
+  #   self.add_route_to_train("0", "311")
 
-    # переместить вперед поезд
-    self.to_next_station("311")
-  end
+  #   # переместить вперед поезд
+  #   self.to_next_station("311")
+  # end
 
   def add_station(name)
     @stations[name] = Station.new(name)
