@@ -4,7 +4,7 @@ class PassengerTrain < Train
   end
 
   def add_wagon(wagon)
-    return unless self.speed == 0
+    return unless speed.zero?
     return unless wagon.is_a?(PassengerTrain)
     @wagons << wagon
   end

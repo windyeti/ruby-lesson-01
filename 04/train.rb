@@ -4,6 +4,7 @@ class Train
   def initialize(number)
     @number = number
     @wagons = []
+    @speed = 0
   end
 
   def delete_wagon
