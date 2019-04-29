@@ -12,8 +12,8 @@ class Model
   end
 
   def create_train(number, type_train)
-    @trains << PassengerTrain.new(number) if type_train == 'passenger'
-    @trains << CargoTrain.new(number) if type_train == 'cargo'
+    @trains << PassengerTrain.new(number) if type_train == 1
+    @trains << CargoTrain.new(number) if type_train == 2
   end
 
   def create_route(start_station, end_station)
@@ -24,11 +24,17 @@ class Model
     route.add_station(station)
   end
 
+  def stations_in_route(route)
+    route.stations
+  end
+
   def delete_station_in_route(route, station)
     route.stations.delete(station)
   end
 
   def add_route_to_train(route, train)
+    puts route
+    puts train
     train.route = route
   end
 

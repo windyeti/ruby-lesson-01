@@ -18,7 +18,7 @@ class Interface
   QUESTION_STATION_NAME = "Введите название станции:"
   QUESTION_INDEX_STATION = "Введите индекс станции:"
   QUESTION_TRAIN_NUMBER = "Введите номер поезда:"
-  QUESTION_TRAIN_TYPE = "Введите тип поезда (passenger or cargo):"
+  QUESTION_TRAIN_TYPE = "Введите тип поезда (passenger => 1 or cargo => 2):"
   QUESTION_INDEX_TRAIN = "Введите индекс поезда:"
   QUESTION_START_STATION = "Введите индекс начальной станции:"
   QUESTION_END_STATION = "Введите индекс конечной станции:"
@@ -48,7 +48,7 @@ class Interface
   end
 
   def chooser_index
-    gets.chomp.to_i
+    gets.to_i
   end
 
   def print_delimeter
@@ -60,7 +60,7 @@ class Interface
   end
 
   def input_number
-    gets.chomp.to_i
+    gets.to_i
   end
 
   def input_type
@@ -70,31 +70,28 @@ class Interface
 
 
 
-  def show_list_station(stations)
-    puts stations.each_with_index.map { |station, index| "#{index} : #{station.name}" }.join(" | ")
+  def show_stations(stations)
+    stations.each.with_index(1) { |station, index| puts "#{index} : #{station.name}" }
   end
 
-  def show_list_train(trains, routes)
-    list = trains.each_with_index.map do |train, index|
-      "[ #{index} : №: #{train.number}, Тип: #{train.class}, \
+  def show_trains(trains, routes)
+    trains.each.with_index(1) do |train, index|
+      puts "[ #{index} : №: #{train.number}, Тип: #{train.class}, \
 Кол. вагонов: #{train.wagons.size}, \
 № маршрута: #{routes.index(train.route)} ]\n"
     end
-    puts list.join("")
   end
 
-  def show_list_route(routes)
-    routes = routes.each_with_index.map do |route, index|
-      "[ № маршрута #{index} : #{route.start_point.name} <=> #{route.end_point.name}, \
+  def show_routes(routes)
+    routes.each.with_index(1) do |route, index|
+      puts "[ Индекс: #{index} : #{route.start_point.name} <=> #{route.end_point.name}, \
 #{route.show_stations} ]"
       end
-      puts routes.join(" | ")
   end
 
-  def show_list_train_in_station(stations)
-    train_on_station = stations.each.map do |station|
-      "[ #{station.name} : #{station.trains.map { |train| train.number }.join(" | ") } ]"
+  def show_trains_station(stations)
+    stations.each do |station|
+      puts "[ #{station.name} : #{station.trains.map { |train| train.number }.join(" | ") } ]"
     end
-    puts train_on_station.join(" | ")
   end
 end
