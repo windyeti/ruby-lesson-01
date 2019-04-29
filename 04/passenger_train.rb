@@ -3,9 +3,7 @@ class PassengerTrain < Train
     super
   end
 
-  def add_wagon(wagon)
-    return unless speed.zero?
-    return unless wagon.is_a?(PassengerTrain)
-    @wagons << wagon
+  def attachable_wagon?(wagon)
+    wagon.is_a?(PassengerWagon)
   end
 end

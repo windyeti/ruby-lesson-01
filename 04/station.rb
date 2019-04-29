@@ -16,7 +16,7 @@ class Station
 
 private
 
-  def get_trains_of_type(type)
+  def trains_of_type(type)
     @trains.select { |train| train.type == type }.size
   end
 end

@@ -32,9 +32,15 @@ class Train
     @current_index_station -= 1
   end
 
+  def add_wagon(wagon)
+    return unless speed.zero?
+    return unless attachable_wagon?(wagon)
+    @wagons << wagon
+  end
+
+
   protected
-  # эти методы используются наследниками внутри классов для премещения по станциям,
-  # но нигде не вызываются вне классов
+
   def current_station
     @route.stations[@current_index_station]
   end
@@ -47,11 +53,8 @@ class Train
     @route.stations[@current_index_station - 1] if @current_index_station > 0
   end
 
-  private
 
-  # изменение speed и количества вагонов делается другими методами,
-  # то есть обращение speed напрямую из других мест не востребованно
-  # в рамках этого задания
+  private
 
   attr_reader :speed
 
