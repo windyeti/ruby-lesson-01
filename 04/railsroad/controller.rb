@@ -37,32 +37,19 @@ class Controller
       @interface.show_menu
       action = @interface.chooser_index
       case action
-      when 1
-        create_station
-      when 2
-        create_train
-      when 3
-        create_route
-      when 4
-        add_station_in_route
-      when 5
-        delete_station_in_route
-      when 6
-        add_route_to_train
-      when 7
-        add_wagon_to_train
-      when 8
-        delete_wagon_from_train
-      when 9
-        to_next_station
-      when 10
-        to_previous_station
-      when 11
-        print_list_station
-      when 12
-        print_list_train_in_station
-      when 0
-        break
+      when 1 then create_station
+      when 2 then create_train
+      when 3 then create_route
+      when 4 then add_station_in_route
+      when 5 then delete_station_in_route
+      when 6 then add_route_to_train
+      when 7 then add_wagon_to_train
+      when 8 then delete_wagon_from_train
+      when 9 then to_next_station
+      when 10 then to_previous_station
+      when 11 then print_list_station
+      when 12 then print_list_train_in_station
+      when 0 then break
       end
     end
   end
