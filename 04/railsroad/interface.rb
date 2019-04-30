@@ -59,7 +59,7 @@ class Interface
     gets.to_i - 1
   end
 
-  def input_type
+  def input_string
     gets.chomp.downcase
   end
 

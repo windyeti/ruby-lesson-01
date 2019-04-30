@@ -38,6 +38,10 @@ class Model
     train.route = route
   end
 
+  def wagons_train?(train)
+    train.wagons.empty?
+  end
+
   def add_wagon_to_train(train, wagon)
     train.add_wagon(wagon)
   end
