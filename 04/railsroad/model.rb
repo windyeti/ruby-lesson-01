@@ -1,6 +1,8 @@
 class Model
   attr_reader :stations, :trains, :routes
 
+  TRAIN_TYPE = ['PassengerTrain', 'CargoTrain']
+
   def initialize(stations = [], routes = [], trains = [])
     @stations = stations
     @routes = routes
@@ -12,8 +14,8 @@ class Model
   end
 
   def create_train(number, type_train)
-    @trains << PassengerTrain.new(number) if type_train == 1
-    @trains << CargoTrain.new(number) if type_train == 2
+    @trains << PassengerTrain.new(number) if type_train == 'PassengerTrain'
+    @trains << CargoTrain.new(number) if type_train == 'CargoTrain'
   end
 
   def create_route(start_station, end_station)
@@ -33,8 +35,6 @@ class Model
   end
 
   def add_route_to_train(route, train)
-    puts route
-    puts train
     train.route = route
   end
 

@@ -16,8 +16,8 @@ class Controller
   #   @model.create_station("kun".downcase.capitalize)
 
   #   # создать маршрут
-  #   @model.create_train(254, 2)
-  #   @model.create_train(311, 1)
+  #   @model.create_train('254', 'PassengerTrain')
+  #   @model.create_train('311', 'CargoTrain')
   #   @model.create_route(@model.stations[0], @model.stations[2])
   #   @model.add_station_into_route(@model.routes[0], @model.stations[1])
   #   @model.add_station_into_route(@model.routes[0], @model.stations[3])
@@ -38,7 +38,7 @@ class Controller
     loop do
       show_exist
       @interface.show_menu
-      action = @interface.chooser_index
+      action = @interface.input_index + 1
       case action
       when 1 then create_station
       when 2 then create_train
@@ -64,7 +64,7 @@ class Controller
     @interface.show_stations(@model.stations)
 
     @interface.show_message(Interface::LIST_TRAIN)
-    @interface.show_trains(@model.trains, @model.routes)
+    @interface.show_trains(@model.trains)
 
     @interface.show_message(Interface::LIST_ROUTE)
     @interface.show_routes(@model.routes)
@@ -81,25 +81,25 @@ class Controller
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_STATION_NAME)
     name_station = @interface.input_name_station
-    if name_station.empty?
-      @interface.show_message(Interface::ERROR_ARGUMENT)
-    else
+    if name_station
       @model.create_station(name_station)
+    else
+      @interface.show_message(Interface::ERROR_ARGUMENT)
     end
   end
 
   def create_train
     @interface.show_message(Interface::LIST_TRAIN)
-    @interface.show_trains(@model.trains, @model.routes)
+    @interface.show_trains(@model.trains)
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_TRAIN_NUMBER)
-    number_train = @interface.input_number
+    number_train = @interface.input_type
     @interface.show_message(Interface::QUESTION_TRAIN_TYPE)
-    type_train = @interface.input_number
-    if number_train.empty? || type_train.empty?
-      @interface.show_message(Interface::ERROR_ARGUMENT)
+    type_train = Model::TRAIN_TYPE[@interface.input_index]
+    if number_train || type_train
+      @model.create_train(number_train, type_train)
     else
-      @model.create_train(number_train.to_i, type_train)
+      @interface.show_message(Interface::ERROR_ARGUMENT)
     end
   end
 
@@ -110,9 +110,9 @@ class Controller
     @interface.show_routes(@model.routes)
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_START_STATION)
-    start_station = @model.stations[@interface.input_number]
+    start_station = @model.stations[@interface.input_index]
     @interface.show_message(Interface::QUESTION_END_STATION)
-    end_station = @model.stations[@interface.input_number]
+    end_station = @model.stations[@interface.input_index]
     if start_station.nil? || end_station.nil?
       @interface.show_message(Interface::ERROR_ARGUMENT)
     else
@@ -127,9 +127,9 @@ class Controller
     @interface.show_routes(@model.routes)
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_INDEX_ROUTE)
-    route = @model.routes[@interface.input_number - 1]
+    route = @model.routes[@interface.input_index]
     @interface.show_message(Interface::QUESTION_INDEX_STATION)
-    station = @model.stations[@interface.input_number - 1]
+    station = @model.stations[@interface.input_index]
     if route.nil? || station.nil?
       @interface.show_message(Interface::ERROR_ARGUMENT)
     else
@@ -142,12 +142,12 @@ class Controller
     @interface.show_routes(@model.routes)
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_INDEX_ROUTE)
-    route = @model.routes[@interface.input_number - 1]
+    route = @model.routes[@interface.input_index]
     @interface.print_delimeter
     @interface.show_stations(route.stations)
     @interface.show_message(Interface::QUESTION_INDEX_STATION)
     stations = @model.stations_in_route(route)
-    station = stations[@interface.input_number - 1]
+    station = stations[@interface.input_index]
     if route.nil? || station.nil?
       @interface.show_message(Interface::ERROR_ARGUMENT)
     else
@@ -159,12 +159,12 @@ class Controller
     @interface.show_message(Interface::LIST_ROUTE)
     @interface.show_routes(@model.routes)
     @interface.show_message(Interface::LIST_TRAIN)
-    @interface.show_trains(@model.trains, @model.routes)
+    @interface.show_trains(@model.trains)
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_INDEX_ROUTE)
-    route = @model.routes[@interface.input_number]
+    route = @model.routes[@interface.input_index]
     @interface.show_message(Interface::QUESTION_INDEX_TRAIN)
-    train = @model.trains[@interface.input_number]
+    train = @model.trains[@interface.input_index]
     if route.nil? || train.nil?
       @interface.show_message(Interface::ERROR_ARGUMENT)
     else
@@ -174,11 +174,12 @@ class Controller
 
   def add_wagon_to_train
     @interface.show_message(Interface::LIST_TRAIN)
-    @interface.show_trains(@model.trains, @model.routes)
+    @interface.show_trains(@model.trains)
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_INDEX_TRAIN)
-    train = @model.trains[@interface.input_number - 1]
-    wagon = if train.is_a?(PassengerTrain)
+    train = @model.trains[@interface.input_index]
+    wagon =
+      if train.is_a?(PassengerTrain)
         PassengerWagon.new
       else
         CargoWagon.new
@@ -188,10 +189,10 @@ class Controller
 
   def delete_wagon_from_train
     @interface.show_message(Interface::LIST_TRAIN)
-    @interface.show_trains(@model.trains, @model.routes)
+    @interface.show_trains(@model.trains)
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_INDEX_TRAIN)
-    train = @model.trains[@interface.input_number]
+    train = @model.trains[@interface.input_index]
     if train
       @model.delete_wagon_from_train(train)
     else
@@ -201,10 +202,10 @@ class Controller
 
   def to_next_station
     @interface.show_message(Interface::LIST_TRAIN)
-    @interface.show_trains(@model.trains, @model.routes)
+    @interface.show_trains(@model.trains)
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_INDEX_TRAIN)
-    train = @model.trains[@interface.input_number]
+    train = @model.trains[@interface.input_index]
     if train && train.route
       @model.to_next_station(train)
     else
@@ -214,10 +215,10 @@ class Controller
 
   def to_previous_station
     @interface.show_message(Interface::LIST_TRAIN)
-    @interface.show_trains(@model.trains, @model.routes)
+    @interface.show_trains(@model.trains)
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_INDEX_TRAIN)
-    train = @model.trains[@interface.input_number]
+    train = @model.trains[@interface.input_index]
     if train && train.route
       @model.to_previous_station(train)
     else

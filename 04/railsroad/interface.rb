@@ -47,10 +47,6 @@ class Interface
     puts list
   end
 
-  def chooser_index
-    gets.to_i
-  end
-
   def print_delimeter
       puts "================================"
   end
@@ -59,8 +55,8 @@ class Interface
     gets.chomp.downcase.capitalize
   end
 
-  def input_number
-    gets.to_i
+  def input_index
+    gets.to_i - 1
   end
 
   def input_type
@@ -71,17 +67,28 @@ class Interface
 
 
   def show_stations(stations)
-    stations.each.with_index(1) { |station, index| puts "#{index} : #{station.name}" }
+    stations.each.with_index(1) do |station, index|
+      puts "#{index} : #{station.name}"
+    end
   end
 
-  def show_trains(trains, routes)
+  def show_trains(trains)
     trains.each.with_index(1) do |train, index|
       number = train.number
       wagons = train.wagons.size
-      index_routes = routes.index(train.route)
 
-      puts "[ #{index} : №: #{number}, Тип: #{train.class}, \
-Кол. вагонов: #{wagons}, № маршрута: #{index_routes} ]"
+      route =
+        if train.route.nil?
+          "нет маршрута"
+        else
+          start = train.route.start_point.name
+          finish = train.route.end_point.name
+          "#{start} - #{finish}"
+        end
+
+      train_info = "[ #{index} : №: #{number}, Тип: #{train.class}, " \
+        "Кол. вагонов: #{wagons}, #{route} ]\n"
+      puts train_info
     end
   end
 
@@ -90,13 +97,17 @@ class Interface
       start = route.start_point.name
       finish = route.end_point.name
       station = route.show_stations
-      puts "[ Индекс: #{index} : #{start} <=> #{finish}, #{station.join(" <> ")} ]"
+      route = "[ Индекс: #{index} : #{start} <=> #{finish}, " \
+        "#{station.join(" <> ")} ]\n"
+      puts route
       end
   end
 
   def show_trains_station(stations)
     stations.each do |station|
-      puts "[ #{station.name} : #{station.trains.map { |train| train.number }.join(" | ") } ]"
+      trains = station.trains.map(&:number)
+      station = "[ #{station.name} : #{trains.join(" | ")} ]"
+      puts station
     end
   end
 end
