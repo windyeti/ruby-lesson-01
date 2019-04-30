@@ -16,6 +16,6 @@ class Route
   end
 
   def show_stations
-    @stations.map {|station| station.name}.join(" <> ")
+    @stations.map(&:name)
   end
 end

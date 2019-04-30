@@ -76,16 +76,21 @@ class Interface
 
   def show_trains(trains, routes)
     trains.each.with_index(1) do |train, index|
-      puts "[ #{index} : №: #{train.number}, Тип: #{train.class}, \
-Кол. вагонов: #{train.wagons.size}, \
-№ маршрута: #{routes.index(train.route)} ]\n"
+      number = train.number
+      wagons = train.wagons.size
+      index_routes = routes.index(train.route)
+
+      puts "[ #{index} : №: #{number}, Тип: #{train.class}, \
+Кол. вагонов: #{wagons}, № маршрута: #{index_routes} ]"
     end
   end
 
   def show_routes(routes)
     routes.each.with_index(1) do |route, index|
-      puts "[ Индекс: #{index} : #{route.start_point.name} <=> #{route.end_point.name}, \
-#{route.show_stations} ]"
+      start = route.start_point.name
+      finish = route.end_point.name
+      station = route.show_stations
+      puts "[ Индекс: #{index} : #{start} <=> #{finish}, #{station.join(" <> ")} ]"
       end
   end
 
