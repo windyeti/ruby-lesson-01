@@ -10,5 +10,5 @@ require_relative 'railsroad/controller'
 
 controller = Controller.new
 
-controller.seed
+# controller.seed
 controller.run
