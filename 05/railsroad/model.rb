@@ -10,21 +10,12 @@ class Model
   end
 
   def create_station(name)
-    station = Station.new(name)
-    @stations << station
-    Station.add_station(station)
+    @stations << Station.new(name)
   end
 
   def create_train(number, type_train)
-    if type_train == 'PassengerTrain'
-      train = PassengerTrain.new(number)
-      @trains << train
-    end
-    if type_train == 'CargoTrain'
-      train = CargoTrain.new(number)
-      @trains << train
-    end
-    Train.add_to_list_trains(train)
+    @trains << PassengerTrain.new(number) if type_train == 'PassengerTrain'
+    @trains << CargoTrain.new(number) if type_train == 'CargoTrain'
   end
 
   def create_route(start_station, end_station)

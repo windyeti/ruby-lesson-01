@@ -9,31 +9,31 @@ class Controller
   end
 
   def seed
-    # # создать станции
-    # @model.create_station("bak".downcase.capitalize)
-    # @model.create_station("set".downcase.capitalize)
-    # @model.create_station("tre".downcase.capitalize)
-    # @model.create_station("nem".downcase.capitalize)
-    # @model.create_station("kun".downcase.capitalize)
+    # создать станции
+    @model.create_station("bak".downcase.capitalize)
+    @model.create_station("set".downcase.capitalize)
+    @model.create_station("tre".downcase.capitalize)
+    @model.create_station("nem".downcase.capitalize)
+    @model.create_station("kun".downcase.capitalize)
 
-    # # создать маршрут
-    # @model.create_train('254', 'PassengerTrain')
-    # @model.create_train('299', 'PassengerTrain')
-    # @model.create_train('311', 'CargoTrain')
-    # @model.create_route(@model.stations[0], @model.stations[2])
-    # @model.add_station_into_route(@model.routes[0], @model.stations[1])
-    # @model.add_station_into_route(@model.routes[0], @model.stations[3])
-    # @model.add_route_to_train(@model.routes[0], @model.trains[0])
+    # создать маршрут
+    @model.create_train('254', 'PassengerTrain')
+    @model.create_train('299', 'PassengerTrain')
+    @model.create_train('311', 'CargoTrain')
+    @model.create_route(@model.stations[0], @model.stations[2])
+    @model.add_station_into_route(@model.routes[0], @model.stations[1])
+    @model.add_station_into_route(@model.routes[0], @model.stations[3])
+    @model.add_route_to_train(@model.routes[0], @model.trains[0])
 
-    # @model.add_wagon_to_train(@model.trains[1], CargoWagon.new)
-    # @model.add_wagon_to_train(@model.trains[0], PassengerWagon.new)
-    # @model.add_wagon_to_train(@model.trains[0], PassengerWagon.new)
-    # @model.delete_wagon_from_train(@model.trains[1])
+    @model.add_wagon_to_train(@model.trains[1], CargoWagon.new)
+    @model.add_wagon_to_train(@model.trains[0], PassengerWagon.new)
+    @model.add_wagon_to_train(@model.trains[0], PassengerWagon.new)
+    @model.delete_wagon_from_train(@model.trains[1])
 
-    # @model.to_next_station(@model.trains[0])
-    # @model.to_next_station(@model.trains[0])
-    # @model.to_next_station(@model.trains[0])
-    # @model.to_next_station(@model.trains[0])
+    @model.to_next_station(@model.trains[0])
+    @model.to_next_station(@model.trains[0])
+    @model.to_next_station(@model.trains[0])
+    @model.to_next_station(@model.trains[0])
   end
 
   def run

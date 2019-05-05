@@ -7,9 +7,6 @@ class Station
 
   @@stations = []
 
-  inheritable_attributes :instances
-  @instances = 0
-
   class << self
     def all
       @@stations
@@ -23,7 +20,8 @@ class Station
   def initialize(name)
     @name = name
     @trains = []
-    super
+    self.class.add_station(self)
+    self.register_instance
   end
 
   def add_train(train)

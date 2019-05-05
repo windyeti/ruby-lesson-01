@@ -7,28 +7,26 @@ class Train
 
   attr_reader :number, :route, :wagons
 
-  @@trains = []
-
-  inheritable_attributes :instances
-  @instances = 0
+  @@trains = {}
 
   def self.find(number)
-    @@trains.select { |train| train.number == number }[0]
+    @@trains[number]
   end
 
   def self.list_trains
     @@trains
   end
 
-  def self.add_to_list_trains(train)
-    @@trains << train
+  def self.add_train(number, train)
+    @@trains[number] = train
   end
 
   def initialize(number)
     @number = number
     @wagons = []
     @speed = 0
-    super
+    self.class.add_train(number, self)
+    self.register_instance
   end
 
   def delete_wagon

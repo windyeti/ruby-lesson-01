@@ -5,14 +5,11 @@ class Route
 
   attr_reader :stations, :start_point, :end_point
 
-  inheritable_attributes :instances
-  @instances = 0
-
   def initialize(start_point, end_point)
     @start_point = start_point
     @end_point = end_point
     @stations = [@start_point, @end_point]
-    super
+    self.register_instance
   end
 
   def add_station(station)
