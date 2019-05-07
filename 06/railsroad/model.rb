@@ -23,7 +23,7 @@ class Model
     if type_train == 'PassengerTrain'
       train = PassengerTrain.new(number, manufacturer)
       @trains << train
-    else type_train == 'CargoTrain'
+    elsif type_train == 'CargoTrain'
       train = CargoTrain.new(number, manufacturer)
       @trains << train
     end
