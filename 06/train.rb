@@ -5,16 +5,17 @@ class Train
   include InstanceCounter
   include Manufacturer
 
-  TRAIN_MANUFACTURER = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i
-  EMPTY_NUMBER_ERROR = "Number must not be empty!!!"
-  NOT_CORRECT_MANUFACTURER = "Manufacturer not correct!!!"
+  TRAIN_NUMBER = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i
+  EMPTY_MANUFACTURER_ERROR = "Manufacturer must not be empty!!!"
+  NOT_CORRECT_NUMBER = "Number not correct!!!"
+  NO_ROUTE = "No route!!!"
 
   attr_reader :number, :route, :wagons
 
   @@trains = {}
 
   def self.find(number)
-    @@trains[number]
+    @@trains[number.downcase]
   end
 
   def self.list_trains
@@ -22,7 +23,7 @@ class Train
   end
 
   def self.add_train(number, train)
-    @@trains[number] = train
+    @@trains[number.downcase] = train
   end
 
   def initialize(number, manufacturer)
@@ -43,13 +44,16 @@ class Train
   end
 
   def validate!
-    raise EMPTY_NUMBER_ERROR if number.empty?
-    # TRAIN_MANUFACTURER = /...../ в первых строках файла присвоено regEx
-    raise NOT_CORRECT_MANUFACTURER if manufacturer !~ TRAIN_MANUFACTURER
+    raise EMPTY_MANUFACTURER_ERROR if manufacturer.empty?
+    raise NOT_CORRECT_NUMBER if number !~ TRAIN_NUMBER
   end
 
   def delete_wagon
     @wagons.pop
+  end
+
+  def has_route?
+    !route.nil?
   end
 
   def route=(route)
@@ -60,6 +64,7 @@ class Train
   end
 
   def to_next_station
+    raise NO_ROUTE unless has_route?
     return if next_station.nil?
     current_station.delete_train(self)
     next_station.add_train(self)
@@ -67,6 +72,7 @@ class Train
   end
 
   def to_previous_station
+    raise NO_ROUTE unless has_route?
     return if previous_station.nil?
     current_station.delete_train(self)
     previous_station.add_train(self)

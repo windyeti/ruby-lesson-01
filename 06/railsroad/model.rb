@@ -7,7 +7,6 @@ class Model
   WRONG_INDEX_TRAIN = "Index train is wrong!!!"
   WRONG_INDEX_STATION = "Index station is wrong!!!"
   NO_WAGONS = "No wagons!!!"
-  NO_ROUTE = "No route!!!"
 
   def initialize(stations = [], routes = [], trains = [])
     @stations = stations
@@ -71,18 +70,12 @@ class Model
     train.delete_wagon
   end
 
-  def has_route?(train)
-    train.route.nil?
-  end
-
   def to_next_station(train)
-    raise NO_ROUTE if has_route?(train)
     raise WRONG_INDEX_TRAIN if train.nil?
     train.to_next_station
   end
 
   def to_previous_station(train)
-    raise NO_ROUTE if has_route?(train)
     raise WRONG_INDEX_TRAIN if train.nil?
     train.to_previous_station
   end
