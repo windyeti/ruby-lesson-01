@@ -108,7 +108,7 @@ class Controller
       train = @model.create_train(number_train, manufacturer_train, type_train)
     rescue StandardError
       attempt += 1
-      @interface.show_attampt(Interface::NOT_CORRECT_ARGUMENT, attempt, OF_ATTAMPTS)
+      @interface.show_attampt(Interface::NOT_CORRECT_ARGUMENT, attempt, Interface::OF_ATTAMPTS)
       retry if attempt < 6
     else
       @interface.show_train(train)
