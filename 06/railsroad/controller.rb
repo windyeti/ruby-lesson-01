@@ -90,29 +90,29 @@ class Controller
     name_station = @interface.input_string
     @model.create_station(name_station)
   rescue StandardError
-    puts "Name not correct!!!"
+    @interface.show_message(Interface::NOT_CORRECT_NAME)
   end
 
   def create_train
     attempt = 0
-  begin
-    @interface.show_message(Interface::LIST_TRAIN)
-    @interface.show_trains(@model.trains)
-    @interface.print_delimeter
-    @interface.show_message(Interface::QUESTION_TRAIN_NUMBER)
-    number_train = @interface.input_string
-    @interface.show_message(Interface::QUESTION_TRAIN_TYPE)
-    type_train = Model::TRAIN_TYPE[@interface.input_index]
-    @interface.show_message(Interface::QUESTION_TRAIN_MANUFACTURER)
-    manufacturer_train = @interface.input_string
-    train = @model.create_train(number_train, manufacturer_train, type_train)
-  rescue StandardError
-    attempt += 1
-    puts "Argument not correct!!! Attempt #{attempt} of 6"
-    retry if attempt < 6
-  else
-    @interface.show_train(train)
-  end
+    begin
+      @interface.show_message(Interface::LIST_TRAIN)
+      @interface.show_trains(@model.trains)
+      @interface.print_delimeter
+      @interface.show_message(Interface::QUESTION_TRAIN_NUMBER)
+      number_train = @interface.input_string
+      @interface.show_message(Interface::QUESTION_TRAIN_TYPE)
+      type_train = Model::TRAIN_TYPE[@interface.input_index]
+      @interface.show_message(Interface::QUESTION_TRAIN_MANUFACTURER)
+      manufacturer_train = @interface.input_string
+      train = @model.create_train(number_train, manufacturer_train, type_train)
+    rescue StandardError
+      attempt += 1
+      @interface.show_attampt(Interface::NOT_CORRECT_ARGUMENT, attempt, OF_ATTAMPTS)
+      retry if attempt < 6
+    else
+      @interface.show_train(train)
+    end
   end
 
   def create_route
@@ -127,7 +127,7 @@ class Controller
     end_station = @model.stations[@interface.input_index]
     @model.create_route(start_station, end_station)
   rescue StandardError
-    puts "Index station is wrong!!!!"
+    @interface.show_message(Interface::WRONG_INDEX_STATION)
   end
 
   def add_station_in_route
@@ -142,7 +142,7 @@ class Controller
     station = @model.stations[@interface.input_index]
     @model.add_station_into_route(route, station)
   rescue StandardError
-    puts "Index route or station - is wrong!!!"
+    @interface.show_message(Interface::WRONG_INDEX_ROUTE_OR_STATION)
   end
 
   def delete_station_in_route
@@ -158,7 +158,7 @@ class Controller
     station = stations[@interface.input_index]
     @model.delete_station_in_route(route, station)
   rescue StandardError
-      puts "Index route or station - is wrong!!!"
+    @interface.show_message(Interface::WRONG_INDEX_ROUTE_OR_STATION)
   end
 
   def add_route_to_train
@@ -173,7 +173,7 @@ class Controller
     train = @model.trains[@interface.input_index]
     @model.add_route_to_train(route, train)
   rescue StandardError
-    puts "Index route or train - is wrong!!!"
+    @interface.show_message(Interface::WRONG_INDEX_ROUTE_OR_TRAIN)
   end
 
   def add_wagon_to_train
@@ -190,7 +190,7 @@ class Controller
       end
     @model.add_wagon_to_train(train, wagon)
   rescue StandardError
-    puts "Index train is wrong!!!"
+    @interface.show_message(Interface::WRONG_INDEX_TRAIN)
   end
 
   def delete_wagon_from_train
@@ -202,7 +202,7 @@ class Controller
     @model.wagons_train?(train)
     @model.delete_wagon_from_train(train)
   rescue StandardError
-      puts "Index train is wrong or there are no wagon!!!"
+    @interface.show_message(Interface::WRONG_INDEX_TRAIN_OR_NO_WAGON)
   end
 
   def to_next_station
@@ -211,10 +211,9 @@ class Controller
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_INDEX_TRAIN)
     train = @model.trains[@interface.input_index]
-    @model.route_train?
     @model.to_next_station(train)
   rescue StandardError
-      puts "Index train is wrong or there are no route!!!"
+    @interface.show_message(Interface::WRONG_INDEX_TRAIN_OR_NO_ROUTE)
   end
 
   def to_previous_station
@@ -223,10 +222,9 @@ class Controller
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_INDEX_TRAIN)
     train = @model.trains[@interface.input_index]
-    @model.route_train?
     @model.to_previous_station(train)
   rescue StandardError
-      puts "Index train is wrong or there are no route!!!"
+    @interface.show_message(Interface::WRONG_INDEX_TRAIN_OR_NO_ROUTE)
   end
 
   def print_list_station

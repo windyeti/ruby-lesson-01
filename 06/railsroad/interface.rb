@@ -33,6 +33,17 @@ class Interface
 
   ERROR_ARGUMENT = "> > > > Ошибка аргумента < < < <"
 
+  NOT_CORRECT_NAME = "Name not correct!!!"
+  NOT_CORRECT_ARGUMENT= "Argument not correct!!! Attampt "
+  OF_ATTAMPTS = " of 6"
+  WRONG_INDEX_STATION = "Index station is wrong!!!!"
+  WRONG_INDEX_ROUTE_OR_STATION = "Index route or station - is wrong!!!"
+  WRONG_INDEX_ROUTE_OR_TRAIN = "Index route or train - is wrong!!!"
+  WRONG_INDEX_TRAIN = "Index train is wrong!!!"
+  WRONG_INDEX_TRAIN_OR_NO_WAGON = "Index train is wrong or there are no wagon!!!"
+  WRONG_INDEX_TRAIN_OR_NO_ROUTE = "Index train is wrong or there are no route!!!"
+
+
 
   def show_menu
     puts Interface::TITLE
@@ -45,12 +56,16 @@ class Interface
     puts message
   end
 
+  def show_attampt(start_message, attampt, end_message)
+    puts "#{start_message} #{attampt} #{end_message}"
+  end
+
   def show_list(list)
     puts list
   end
 
   def print_delimeter
-      puts "================================"
+    puts "================================"
   end
 
   # def input_name_station

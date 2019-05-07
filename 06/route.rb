@@ -5,16 +5,18 @@ class Route
 
   attr_reader :stations, :start_point, :end_point
 
+  WRONG_INDEX_STATION = "Index station is wrong!!!"
+
   def initialize(start_point, end_point)
     @start_point = start_point
     @end_point = end_point
     @stations = [@start_point, @end_point]
-    self.register_instance
     validate!
+    register_instance
   end
 
   def validate!
-    raise "Index station is wrong!!!" if @start_point.nil? || @end_point.nil?
+    raise WRONG_INDEX_STATION if @start_point.nil? || @end_point.nil?
   end
 
   def add_station(station)

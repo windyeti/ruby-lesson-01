@@ -6,6 +6,8 @@ class Train
   include Manufacturer
 
   TRAIN_MANUFACTURER = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i
+  EMPTY_NUMBER_ERROR = "Number must not be empty!!!"
+  NOT_CORRECT_MANUFACTURER = "Manufacturer not correct!!!"
 
   attr_reader :number, :route, :wagons
 
@@ -29,8 +31,8 @@ class Train
     @speed = 0
     @manufacturer = manufacturer
     self.class.add_train(number, self)
-    self.register_instance
     validate!
+    register_instance
   end
 
   def valid?
@@ -41,8 +43,9 @@ class Train
   end
 
   def validate!
-    raise "Number must not be empty!!!" if number.empty?
-    raise "Manufacturer not correct!!!" if manufacturer !~ TRAIN_MANUFACTURER
+    raise EMPTY_NUMBER_ERROR if number.empty?
+    # TRAIN_MANUFACTURER = /...../ в первых строках файла присвоено regEx
+    raise NOT_CORRECT_MANUFACTURER if manufacturer !~ TRAIN_MANUFACTURER
   end
 
   def delete_wagon

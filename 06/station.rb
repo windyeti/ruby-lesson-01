@@ -5,6 +5,8 @@ class Station
 
   attr_reader :trains, :name
 
+  EMPTY_NAME_ERROR = "Name must not be empty!!!"
+
   @@stations = []
 
   class << self
@@ -21,12 +23,12 @@ class Station
     @name = name
     @trains = []
     self.class.add_station(self)
-    self.register_instance
     validate!
+    register_instance
   end
 
   def validate!
-    raise "Name must not be empty!!!" if name.empty?
+    raise EMPTY_NAME_ERROR if name.empty?
   end
 
   def add_train(train)
