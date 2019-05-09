@@ -8,7 +8,7 @@ class Wagon
   NOT_FREE = "Not free places!!!"
 
   def initialize(amount)
-    @amount = amount
+    @amount = amount.to_f
     @places = 0.to_f
   end
 

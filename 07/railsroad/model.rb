@@ -7,6 +7,7 @@ class Model
   WRONG_INDEX_TRAIN = "Index train is wrong!!!"
   WRONG_INDEX_STATION = "Index station is wrong!!!"
   NO_WAGONS = "No wagons!!!"
+  NOT_FREE = "Not free!!!"
 
   def initialize(stations = [], routes = [], trains = [])
     @stations = stations
@@ -80,7 +81,8 @@ class Model
     train.to_previous_station
   end
 
-  def take_place_in_wagon(wagon, value = 1)
+  def take_place_in_wagon(wagon, value)
+    raise NOT_FREE if value > wagon.free_places
     wagon.load_place(value)
   end
 end

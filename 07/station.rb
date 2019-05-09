@@ -27,8 +27,8 @@ class Station
     register_instance
   end
 
-  def trains_in_station
-    self.trains.each { |train| yield(train) }
+  def each_train
+    trains.each { |train| yield(train) }
   end
 
   def validate!

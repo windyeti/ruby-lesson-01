@@ -239,7 +239,6 @@ class Controller
   end
 
   def take_place_in_wagon
-    one_passenger = 1
     @interface.show_message(Interface::LIST_TRAIN)
     @interface.show_trains(@model.trains)
     @interface.print_delimeter
@@ -249,13 +248,16 @@ class Controller
     @interface.show_wagons(train.wagons)
     @interface.show_message(Interface::QUESTION_INDEX_WAGON)
     wagon = train.wagons[@interface.input_index]
-    value = one_passenger
-    if train.is_a?(CargoTrain)
+    type_wagon = wagon.class
+    case type_wagon.to_s
+    when 'CargoWagon'
       @interface.show_message(Interface::QUESTION_WAGON_VALUE)
       value = @interface.input_value
+      @model.take_place_in_wagon(wagon, value)
+    when 'PassengerWagon'
+      @model.take_place_in_wagon(wagon, 1)
     end
-    @model.take_place_in_wagon(wagon, value)
   rescue
-    @interface.show_message(Interface::WRONG_INDEX_TRAIN_OR_NO_WAGON)
+    @interface.show_message(Interface::WRONG_INDEX_TRAIN_OR_NO_WAGON_OR_NOT_FREE)
   end
 end

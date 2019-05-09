@@ -47,6 +47,8 @@ class Interface
   QUESTION_VALUE_WAGON = "Вместимость вагона:"
   QUESTION_WAGON_VALUE = "Сколько добавить:"
   QUESTION_INDEX_WAGON = "Введите № вагона:"
+  WRONG_INDEX_TRAIN_OR_NO_WAGON_OR_NOT_FREE =
+  "Index train is wrong or no wagon or no free!!!"
 
 
 
@@ -85,9 +87,6 @@ class Interface
     gets.chomp.downcase.capitalize
   end
 
-
-
-
   def show_stations(stations)
     stations.each.with_index(1) do |station, index|
       puts "#{index} : #{station.name}"
@@ -98,16 +97,8 @@ class Interface
     trains.each.with_index(1) do |train, index|
       number = train.number
       wagons = train.wagons.each.with_index(1).map do |wagon, index|
-        amount = wagon.amount
-        free_places = wagon.free_places
-        not_free_places = wagon.not_free_places
-        if train.is_a?(PassengerTrain)
-          amount = wagon.amount.to_i
-          free_places = wagon.free_places.to_i
-          not_free_places = wagon.not_free_places.to_i
-        end
-        "№: #{index}, Общий объем: #{amount}, "\
-        "Свободно: #{free_places}, Занято: #{not_free_places}; "
+        "№: #{index}, Общий объем: #{wagon.amount}, "\
+        "Свободно: #{wagon.free_places}, Занято: #{wagon.not_free_places}; "
       end
       manufacturer = train.manufacturer
       volum = "мест" if train.is_a?(PassengerTrain)
@@ -163,16 +154,8 @@ class Interface
 
   def show_wagons(wagons)
     wagonsMap = wagons.each.with_index(1).map do |wagon, index|
-      amount = wagon.amount
-      free_places = wagon.free_places
-      not_free_places = wagon.not_free_places
-      if wagon.is_a?(PassengerWagon)
-        amount = wagon.amount.to_i
-        free_places = wagon.free_places.to_i
-        not_free_places = wagon.not_free_places.to_i
-      end
-      "Индекс вагона: #{index}, Общий объем: #{amount}, "\
-      "Свободно: #{free_places}, Занято: #{not_free_places}; "
+      "Индекс вагона: #{index}, Общий объем: #{wagon.amount}, "\
+      "Свободно: #{wagon.free_places}, Занято: #{wagon.not_free_places}; "
     end
     puts wagonsMap.join(", ")
   end

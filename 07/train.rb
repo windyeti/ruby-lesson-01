@@ -26,8 +26,8 @@ class Train
     @@trains[number.downcase] = train
   end
 
-  def wagons_in_train
-    self.wagons.each { | wagon | yield(wagon) }
+  def each_wagon
+    wagons.each { | wagon | yield(wagon) }
   end
 
   def initialize(number, manufacturer)
