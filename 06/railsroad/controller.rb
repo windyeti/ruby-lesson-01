@@ -26,9 +26,9 @@ class Controller
     @model.add_station_into_route(@model.routes[0], @model.stations[3])
     @model.add_route_to_train(@model.routes[0], @model.trains[0])
 
-    @model.add_wagon_to_train(@model.trains[1], CargoWagon.new)
-    @model.add_wagon_to_train(@model.trains[0], PassengerWagon.new)
-    @model.add_wagon_to_train(@model.trains[0], PassengerWagon.new)
+    @model.add_wagon_to_train(@model.trains[2], CargoWagon.new(24.0))
+    @model.add_wagon_to_train(@model.trains[0], PassengerWagon.new(56.0))
+    @model.add_wagon_to_train(@model.trains[0], PassengerWagon.new(64.0))
     @model.delete_wagon_from_train(@model.trains[1])
 
     @model.to_next_station(@model.trains[0])
@@ -55,6 +55,7 @@ class Controller
       when 10 then to_previous_station
       when 11 then print_list_station
       when 12 then print_list_train_in_station
+      when 13 then take_place_in_wagon
       when 0 then break
       end
     end
@@ -72,7 +73,7 @@ class Controller
     @interface.show_message(Interface::LIST_ROUTE)
     @interface.show_routes(@model.routes)
 
-    @interface.show_message(Interface::LIST_TRAIN_IN_ROUTE)
+    @interface.show_message(Interface::LIST_TRAIN_IN_STATION)
     @interface.show_trains_station(@model.stations)
     @interface.print_delimeter
     # @interface.show_list(Station.instances)
@@ -182,11 +183,13 @@ class Controller
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_INDEX_TRAIN)
     train = @model.trains[@interface.input_index]
+    @interface.show_message(Interface::QUESTION_VALUE_WAGON)
+    value_wagon = @interface.input_value
     wagon =
       if train.is_a?(PassengerTrain)
-        PassengerWagon.new
+        PassengerWagon.new(value_wagon)
       else
-        CargoWagon.new
+        CargoWagon.new(value_wagon)
       end
     @model.add_wagon_to_train(train, wagon)
   rescue StandardError
@@ -233,5 +236,26 @@ class Controller
 
   def print_list_train_in_station
     @interface.show_trains_station(@model.stations)
+  end
+
+  def take_place_in_wagon
+    one_passenger = 1
+    @interface.show_message(Interface::LIST_TRAIN)
+    @interface.show_trains(@model.trains)
+    @interface.print_delimeter
+    @interface.show_message(Interface::QUESTION_INDEX_TRAIN)
+    train = @model.trains[@interface.input_index]
+    @interface.show_message(Interface::LIST_WAGON)
+    @interface.show_wagons(train.wagons)
+    @interface.show_message(Interface::QUESTION_INDEX_WAGON)
+    wagon = train.wagons[@interface.input_index]
+    value = one_passenger
+    if train.is_a?(CargoTrain)
+      @interface.show_message(Interface::QUESTION_WAGON_VALUE)
+      value = @interface.input_value
+    end
+    @model.take_place_in_wagon(wagon, value)
+  rescue
+    @interface.show_message(Interface::WRONG_INDEX_TRAIN_OR_NO_WAGON)
   end
 end

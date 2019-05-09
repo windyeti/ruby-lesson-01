@@ -13,7 +13,8 @@ class Interface
     "Переместить поезд вперед",
     "Переместить поезд назад",
     "Список станций",
-    "Список поездов на станции"
+    "Список поездов на станции",
+    "Занять место в вагоне"
   ]
   QUESTION_STATION_NAME = "Введите название станции:"
   QUESTION_INDEX_STATION = "Введите индекс станции:"
@@ -29,7 +30,8 @@ class Interface
   LIST_STATION_NAME = "Список созданных станций:"
   LIST_TRAIN = "Список созданных поездов:"
   LIST_ROUTE = "Список созданных маршрутов:"
-  LIST_TRAIN_IN_ROUTE = "Список поездов на станции:"
+  LIST_WAGON = "Список вагонов:"
+  LIST_TRAIN_IN_STATION = "Список поездов на станции:"
 
   ERROR_ARGUMENT = "> > > > Ошибка аргумента < < < <"
 
@@ -42,6 +44,9 @@ class Interface
   WRONG_INDEX_TRAIN = "Index train is wrong!!!"
   WRONG_INDEX_TRAIN_OR_NO_WAGON = "Index train is wrong or there are no wagon!!!"
   WRONG_INDEX_TRAIN_OR_NO_ROUTE = "Index train is wrong or there are no route!!!"
+  QUESTION_VALUE_WAGON = "Вместимость вагона:"
+  QUESTION_WAGON_VALUE = "Сколько добавить:"
+  QUESTION_INDEX_WAGON = "Введите № вагона:"
 
 
 
@@ -68,9 +73,9 @@ class Interface
     puts "================================"
   end
 
-  # def input_name_station
-  #   gets.chomp.downcase.capitalize
-  # end
+  def input_value
+    gets.to_f
+  end
 
   def input_index
     gets.to_i - 1
@@ -92,8 +97,21 @@ class Interface
   def show_trains(trains)
     trains.each.with_index(1) do |train, index|
       number = train.number
-      wagons = train.wagons.map { |wagon| wagon.manufacturer ? wagon.manufacturer : "no name" }
+      wagons = train.wagons.each.with_index(1).map do |wagon, index|
+        amount = wagon.amount
+        free_places = wagon.free_places
+        not_free_places = wagon.not_free_places
+        if train.is_a?(PassengerTrain)
+          amount = wagon.amount.to_i
+          free_places = wagon.free_places.to_i
+          not_free_places = wagon.not_free_places.to_i
+        end
+        "№: #{index}, Общий объем: #{amount}, "\
+        "Свободно: #{free_places}, Занято: #{not_free_places}; "
+      end
       manufacturer = train.manufacturer
+      volum = "мест" if train.is_a?(PassengerTrain)
+      volum = "м куб." if train.is_a?(CargoTrain)
 
       route =
         if train.route.nil?
@@ -106,7 +124,7 @@ class Interface
 
       train_info = "[ #{index} : №: #{number}, Тип: #{train.class}, " \
         "Производитель поезда: #{manufacturer}, " \
-        "Вагоны: #{wagons}, #{route} ]"
+        "Вагоны (#{volum}): #{wagons} Маршрут: #{route} ]"
       puts train_info
     end
   end
@@ -130,9 +148,32 @@ class Interface
 
   def show_trains_station(stations)
     stations.each do |station|
-      trains = station.trains.map(&:number)
+      trains = station.trains.map do |train|
+        type = if train.is_a?(PassengerTrain)
+          'PassengerTrain'
+        elsif train.is_a?(CargoTrain)
+          'CargoTrain'
+        end
+        "[ №: #{train.number}, Тип: #{type}, Количество вагонов: #{train.wagons.size}]"
+      end
       station = "[ #{station.name} : #{trains.join(" | ")} ]"
       puts station
     end
+  end
+
+  def show_wagons(wagons)
+    wagonsMap = wagons.each.with_index(1).map do |wagon, index|
+      amount = wagon.amount
+      free_places = wagon.free_places
+      not_free_places = wagon.not_free_places
+      if wagon.is_a?(PassengerWagon)
+        amount = wagon.amount.to_i
+        free_places = wagon.free_places.to_i
+        not_free_places = wagon.not_free_places.to_i
+      end
+      "Индекс вагона: #{index}, Общий объем: #{amount}, "\
+      "Свободно: #{free_places}, Занято: #{not_free_places}; "
+    end
+    puts wagonsMap.join(", ")
   end
 end

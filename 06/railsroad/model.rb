@@ -79,4 +79,8 @@ class Model
     raise WRONG_INDEX_TRAIN if train.nil?
     train.to_previous_station
   end
+
+  def take_place_in_wagon(wagon, value = 1)
+    wagon.load_place(value)
+  end
 end

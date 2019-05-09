@@ -27,6 +27,10 @@ class Station
     register_instance
   end
 
+  def trains_in_station
+    self.trains.each { |train| yield(train) }
+  end
+
   def validate!
     raise EMPTY_NAME_ERROR if name.empty?
   end
