@@ -6,6 +6,7 @@ class Model
   WRONG_INDEX_ROUTE = "Index route is wrong!!!"
   WRONG_INDEX_TRAIN = "Index train is wrong!!!"
   WRONG_INDEX_STATION = "Index station is wrong!!!"
+  WRONG_INDEX_WAGON = "Index wagon is wrong!!!"
   NO_WAGONS = "No wagons!!!"
   NOT_FREE = "Not free!!!"
 
@@ -36,13 +37,16 @@ class Model
   end
 
   def add_station_into_route(route, station)
-    raise WRONG_INDEX_ROUTE if route.nil?
-    raise WRONG_INDEX_STATION if station.nil?
     route.add_station(station)
   end
 
   def stations_in_route(route)
     route.stations
+  end
+
+  def station_by_index(stations, index)
+    raise WRONG_INDEX_STATION if stations[index].nil?
+    stations[index]
   end
 
   def delete_station_in_route(route, station)
@@ -72,17 +76,35 @@ class Model
   end
 
   def to_next_station(train)
-    raise WRONG_INDEX_TRAIN if train.nil?
     train.to_next_station
   end
 
   def to_previous_station(train)
-    raise WRONG_INDEX_TRAIN if train.nil?
     train.to_previous_station
   end
 
   def take_place_in_wagon(wagon, value)
     raise NOT_FREE if value > wagon.free_places
     wagon.load_place(value)
+  end
+
+  def find_station(index)
+    raise WRONG_INDEX_STATION if stations[index].nil?
+    stations[index]
+  end
+
+  def find_route(index)
+    raise WRONG_INDEX_ROUTE if routes[index].nil?
+    routes[index]
+  end
+
+  def find_train(index)
+    raise WRONG_INDEX_TRAIN if trains[index].nil?
+    trains[index]
+  end
+
+  def find_wagon(train, index)
+    raise WRONG_INDEX_WAGON if train.wagons[index].nil?
+    train.wagons[index]
   end
 end

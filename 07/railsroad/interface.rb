@@ -33,22 +33,12 @@ class Interface
   LIST_WAGON = "Список вагонов:"
   LIST_TRAIN_IN_STATION = "Список поездов на станции:"
 
-  ERROR_ARGUMENT = "> > > > Ошибка аргумента < < < <"
-
   NOT_CORRECT_NAME = "Name not correct!!!"
   NOT_CORRECT_ARGUMENT= "Argument not correct!!! Attampt "
   OF_ATTAMPTS = " of 6"
-  WRONG_INDEX_STATION = "Index station is wrong!!!!"
-  WRONG_INDEX_ROUTE_OR_STATION = "Index route or station - is wrong!!!"
-  WRONG_INDEX_ROUTE_OR_TRAIN = "Index route or train - is wrong!!!"
-  WRONG_INDEX_TRAIN = "Index train is wrong!!!"
-  WRONG_INDEX_TRAIN_OR_NO_WAGON = "Index train is wrong or there are no wagon!!!"
-  WRONG_INDEX_TRAIN_OR_NO_ROUTE = "Index train is wrong or there are no route!!!"
   QUESTION_VALUE_WAGON = "Вместимость вагона:"
   QUESTION_WAGON_VALUE = "Сколько добавить:"
   QUESTION_INDEX_WAGON = "Введите № вагона:"
-  WRONG_INDEX_TRAIN_OR_NO_WAGON_OR_NOT_FREE =
-  "Index train is wrong or no wagon or no free!!!"
 
 
 

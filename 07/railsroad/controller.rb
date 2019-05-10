@@ -90,8 +90,8 @@ class Controller
     @interface.show_message(Interface::QUESTION_STATION_NAME)
     name_station = @interface.input_string
     @model.create_station(name_station)
-  rescue StandardError
-    @interface.show_message(Interface::NOT_CORRECT_NAME)
+  rescue StandardError => e
+    @interface.show_message(e.message)
   end
 
   def create_train
@@ -107,7 +107,8 @@ class Controller
       @interface.show_message(Interface::QUESTION_TRAIN_MANUFACTURER)
       manufacturer_train = @interface.input_string
       train = @model.create_train(number_train, manufacturer_train, type_train)
-    rescue StandardError
+    rescue StandardError => e
+      @interface.show_message(e.message)
       attempt += 1
       @interface.show_attampt(Interface::NOT_CORRECT_ARGUMENT, attempt, Interface::OF_ATTAMPTS)
       retry if attempt < 6
@@ -127,8 +128,8 @@ class Controller
     @interface.show_message(Interface::QUESTION_END_STATION)
     end_station = @model.stations[@interface.input_index]
     @model.create_route(start_station, end_station)
-  rescue StandardError
-    @interface.show_message(Interface::WRONG_INDEX_STATION)
+  rescue StandardError => e
+    @interface.show_message(e.message)
   end
 
   def add_station_in_route
@@ -138,12 +139,12 @@ class Controller
     @interface.show_routes(@model.routes)
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_INDEX_ROUTE)
-    route = @model.routes[@interface.input_index]
+    route = @model.find_route(@interface.input_index)
     @interface.show_message(Interface::QUESTION_INDEX_STATION)
-    station = @model.stations[@interface.input_index]
+    station = @model.find_station(@interface.input_index)
     @model.add_station_into_route(route, station)
-  rescue StandardError
-    @interface.show_message(Interface::WRONG_INDEX_ROUTE_OR_STATION)
+  rescue StandardError => e
+    @interface.show_message(e.message)
   end
 
   def delete_station_in_route
@@ -151,15 +152,15 @@ class Controller
     @interface.show_routes(@model.routes)
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_INDEX_ROUTE)
-    route = @model.routes[@interface.input_index]
+    route = @model.find_route(@interface.input_index)
     @interface.print_delimeter
     @interface.show_stations(route.stations)
     @interface.show_message(Interface::QUESTION_INDEX_STATION)
     stations = @model.stations_in_route(route)
-    station = stations[@interface.input_index]
+    station = @model.station_by_index(stations, @interface.input_index)
     @model.delete_station_in_route(route, station)
-  rescue StandardError
-    @interface.show_message(Interface::WRONG_INDEX_ROUTE_OR_STATION)
+  rescue StandardError => e
+    @interface.show_message(e.message)
   end
 
   def add_route_to_train
@@ -169,12 +170,12 @@ class Controller
     @interface.show_trains(@model.trains)
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_INDEX_ROUTE)
-    route = @model.routes[@interface.input_index]
+    route = @model.find_route(@interface.input_index)
     @interface.show_message(Interface::QUESTION_INDEX_TRAIN)
-    train = @model.trains[@interface.input_index]
+    train = @model.find_train(@interface.input_index)
     @model.add_route_to_train(route, train)
-  rescue StandardError
-    @interface.show_message(Interface::WRONG_INDEX_ROUTE_OR_TRAIN)
+  rescue StandardError => e
+    @interface.show_message(e.message)
   end
 
   def add_wagon_to_train
@@ -182,7 +183,7 @@ class Controller
     @interface.show_trains(@model.trains)
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_INDEX_TRAIN)
-    train = @model.trains[@interface.input_index]
+    train = @model.find_train(@interface.input_index)
     @interface.show_message(Interface::QUESTION_VALUE_WAGON)
     value_wagon = @interface.input_value
     wagon =
@@ -192,8 +193,8 @@ class Controller
         CargoWagon.new(value_wagon)
       end
     @model.add_wagon_to_train(train, wagon)
-  rescue StandardError
-    @interface.show_message(Interface::WRONG_INDEX_TRAIN)
+  rescue StandardError => e
+    @interface.show_message(e.message)
   end
 
   def delete_wagon_from_train
@@ -201,11 +202,11 @@ class Controller
     @interface.show_trains(@model.trains)
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_INDEX_TRAIN)
-    train = @model.trains[@interface.input_index]
+    train = @model.ifnd_train(@interface.input_index)
     @model.wagons_train?(train)
     @model.delete_wagon_from_train(train)
-  rescue StandardError
-    @interface.show_message(Interface::WRONG_INDEX_TRAIN_OR_NO_WAGON)
+  rescue StandardError => e
+    @interface.show_message(e.message)
   end
 
   def to_next_station
@@ -213,10 +214,10 @@ class Controller
     @interface.show_trains(@model.trains)
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_INDEX_TRAIN)
-    train = @model.trains[@interface.input_index]
+    train = @model.find_train(@interface.input_index)
     @model.to_next_station(train)
-  rescue StandardError
-    @interface.show_message(Interface::WRONG_INDEX_TRAIN_OR_NO_ROUTE)
+  rescue StandardError => e
+    @interface.show_message(e.message)
   end
 
   def to_previous_station
@@ -224,10 +225,10 @@ class Controller
     @interface.show_trains(@model.trains)
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_INDEX_TRAIN)
-    train = @model.trains[@interface.input_index]
+    train = @model.find_train(@interface.input_index)
     @model.to_previous_station(train)
-  rescue StandardError
-    @interface.show_message(Interface::WRONG_INDEX_TRAIN_OR_NO_ROUTE)
+  rescue StandardError => e
+    @interface.show_message(e.message)
   end
 
   def print_list_station
@@ -243,21 +244,21 @@ class Controller
     @interface.show_trains(@model.trains)
     @interface.print_delimeter
     @interface.show_message(Interface::QUESTION_INDEX_TRAIN)
-    train = @model.trains[@interface.input_index]
+    train = @model.find_train(@interface.input_index)
+    @model.wagons_train?(train)
     @interface.show_message(Interface::LIST_WAGON)
     @interface.show_wagons(train.wagons)
     @interface.show_message(Interface::QUESTION_INDEX_WAGON)
-    wagon = train.wagons[@interface.input_index]
-    type_wagon = wagon.class
-    case type_wagon.to_s
-    when 'CargoWagon'
+    wagon = @model.find_wagon(train, @interface.input_index)
+    case wagon
+    when CargoWagon
       @interface.show_message(Interface::QUESTION_WAGON_VALUE)
       value = @interface.input_value
       @model.take_place_in_wagon(wagon, value)
-    when 'PassengerWagon'
+    when PassengerWagon
       @model.take_place_in_wagon(wagon, 1)
     end
-  rescue
-    @interface.show_message(Interface::WRONG_INDEX_TRAIN_OR_NO_WAGON_OR_NOT_FREE)
+  rescue StandardError => e
+    @interface.show_message(e.message)
   end
 end
