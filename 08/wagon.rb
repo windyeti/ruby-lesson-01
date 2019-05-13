@@ -5,7 +5,7 @@ class Wagon
 
   attr_reader :amount
 
-  NOT_FREE = "Not free places!!!"
+  NOT_FREE = "Not free places!!!".freeze
 
   def initialize(amount)
     @amount = amount.to_f
@@ -14,6 +14,7 @@ class Wagon
 
   def load_place(value = 1)
     raise NOT_FREE if value > free_places
+
     @places += value
   end
 

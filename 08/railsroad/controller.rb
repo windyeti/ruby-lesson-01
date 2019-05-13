@@ -8,36 +8,37 @@ class Controller
     @interface = Interface.new
   end
 
-  def seed
-    @model.create_station("bak".downcase.capitalize)
-    @model.create_station("set".downcase.capitalize)
-    @model.create_station("tre".downcase.capitalize)
-    @model.create_station("nem".downcase.capitalize)
-    @model.create_station("kun".downcase.capitalize)
+  # def seed
+  #   @model.create_station("bak".downcase.capitalize)
+  #   @model.create_station("set".downcase.capitalize)
+  #   @model.create_station("tre".downcase.capitalize)
+  #   @model.create_station("nem".downcase.capitalize)
+  #   @model.create_station("kun".downcase.capitalize)
 
-    @model.create_train('dfg-45', 'Cargo & Co', 'PassengerTrain')
-    @model.create_train('3r4-C7', 'Cargo & Co', 'PassengerTrain')
-    @model.create_train('456-90', 'Cargo & Co', 'CargoTrain')
-    @model.create_train('WR3-C7', 'Cargo & Co', 'CargoTrain')
-    @model.create_route(@model.stations[0], @model.stations[2])
-    @model.add_station_into_route(@model.routes[0], @model.stations[1])
-    @model.add_station_into_route(@model.routes[0], @model.stations[3])
-    @model.add_route_to_train(@model.routes[0], @model.trains[0])
+  #   @model.create_train('dfg-45', 'Cargo & Co', 'PassengerTrain')
+  #   @model.create_train('3r4-C7', 'Cargo & Co', 'PassengerTrain')
+  #   @model.create_train('456-90', 'Cargo & Co', 'CargoTrain')
+  #   @model.create_train('WR3-C7', 'Cargo & Co', 'CargoTrain')
+  #   @model.create_route(@model.stations[0], @model.stations[2])
+  #   @model.add_station_into_route(@model.routes[0], @model.stations[1])
+  #   @model.add_station_into_route(@model.routes[0], @model.stations[3])
+  #   @model.add_route_to_train(@model.routes[0], @model.trains[0])
 
-    @model.add_wagon_to_train(@model.trains[2], CargoWagon.new(24.0))
-    @model.add_wagon_to_train(@model.trains[0], PassengerWagon.new(56.0))
-    @model.add_wagon_to_train(@model.trains[0], PassengerWagon.new(64.0))
-    @model.delete_wagon_from_train(@model.trains[1])
+  #   @model.add_wagon_to_train(@model.trains[2], CargoWagon.new(24.0))
+  #   @model.add_wagon_to_train(@model.trains[0], PassengerWagon.new(56.0))
+  #   @model.add_wagon_to_train(@model.trains[0], PassengerWagon.new(64.0))
+  #   @model.delete_wagon_from_train(@model.trains[1])
 
-    @model.to_next_station(@model.trains[0])
-    @model.to_next_station(@model.trains[0])
-    @model.to_next_station(@model.trains[0])
-    @model.to_next_station(@model.trains[0])
-  end
+  #   @model.to_next_station(@model.trains[0])
+  #   @model.to_next_station(@model.trains[0])
+  #   @model.to_next_station(@model.trains[0])
+  #   @model.to_next_station(@model.trains[0])
+  # end
 
+  # rubocop:disable Metrics/CyclomaticComplexity
   def run
     loop do
-      show_exist
+      # show_exist
       @interface.show_menu
       action = @interface.input_index + 1
       case action
@@ -58,24 +59,25 @@ class Controller
       end
     end
   end
+  # rubocop:enable Metrics/CyclomaticComplexity
 
-  def show_exist
-    @interface.print_delimeter
-    @interface.print_delimeter
-    @interface.show_message(Interface::LIST_STATION_NAME)
-    @interface.show_stations(@model.stations)
+  # def show_exist
+  #   @interface.print_delimeter
+  #   @interface.print_delimeter
+  #   @interface.show_message(Interface::LIST_STATION_NAME)
+  #   @interface.show_stations(@model.stations)
 
-    @interface.show_message(Interface::LIST_TRAIN)
-    @interface.show_trains(@model.trains)
+  #   @interface.show_message(Interface::LIST_TRAIN)
+  #   @interface.show_trains(@model.trains)
 
-    @interface.show_message(Interface::LIST_ROUTE)
-    @interface.show_routes(@model.routes)
+  #   @interface.show_message(Interface::LIST_ROUTE)
+  #   @interface.show_routes(@model.routes)
 
-    @interface.show_message(Interface::LIST_TRAIN_IN_STATION)
-    @interface.show_trains_station(@model.stations)
-    @interface.print_delimeter
-    @interface.print_delimeter
-  end
+  #   @interface.show_message(Interface::LIST_TRAIN_IN_STATION)
+  #   @interface.show_trains_station(@model.stations)
+  #   @interface.print_delimeter
+  #   @interface.print_delimeter
+  # end
 
   def create_station
     @interface.show_message(Interface::LIST_STATION_NAME)
@@ -104,7 +106,11 @@ class Controller
     rescue StandardError => e
       @interface.show_message(e.message)
       attempt += 1
-      @interface.show_attampt(Interface::NOT_CORRECT_ARGUMENT, attempt, Interface::OF_ATTAMPTS)
+      @interface.show_attampt(
+        Interface::NOT_CORRECT_ARGUMENT,
+        attempt,
+        Interface::OF_ATTAMPTS
+      )
       retry if attempt < 6
     else
       @interface.show_train(train)
