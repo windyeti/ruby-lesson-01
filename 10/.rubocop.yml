@@ -1,0 +1,8 @@
+Style/StringLiterals:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Layout/SpaceAroundBlockParameters:
+  Enabled: false
