@@ -13,8 +13,6 @@ class Station
   validate :name, :type, String
   validate :name, :format, /^[A-Z]{1}[a-z]+$/
 
-  # EMPTY_NAME_ERROR = "Name must not be empty!!!".freeze
-
   @stations = []
 
   class << self

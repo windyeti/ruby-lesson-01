@@ -12,10 +12,15 @@ class Wagon
   NOT_FREE = "Not free places!!!".freeze
 
   def initialize(amount)
-    # puts amount.class
-    @amount = amount.to_f
-    @places = 0.to_f
+    @amount = amount
+    @places = 0
     validate!
+    change_type
+  end
+
+  def change_type
+    amount = amount.to_f
+    places = places.to_f
   end
 
   def load_place(value = 1)

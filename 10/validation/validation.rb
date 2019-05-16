@@ -5,48 +5,58 @@ module Validation
   end
 
   module ClassMethods
-    ERROR_VALIDATION = "ERROR VALIDATION. Method of validation:"
-    def validate(name, type_validate, options = {})
-      case type_validate
-      when :presence
-        define_method("#{name}_validate_#{type_validate}".to_sym) do
-          if instance_variable_get("@#{name}".to_sym).nil? \
-            || instance_variable_get("@#{name}".to_sym) == ''
-            raise  "#{ERROR_VALIDATION} #{name}_validate_#{type_validate}"
-          end
-        end
-      when :format
-        define_method("#{name}_validate_#{type_validate}".to_sym) do
-          unless options =~ instance_variable_get("@#{name}".to_sym).to_s
-            raise  "#{ERROR_VALIDATION} #{name}_validate_#{type_validate}"
-          end
-        end
-      when :type
-        define_method("#{name}_validate_#{type_validate}".to_sym) do
-          unless options == instance_variable_get("@#{name}".to_sym).class
-            raise  "#{ERROR_VALIDATION} #{name}_validate_#{type_validate}"
-          end
-        end
-      end
+    def validations
+      @validations
+    end
+
+    def validations=(value)
+      @validations ||= []
+      @validations << value
+    end
+
+    def validate(name, type, args = '')
+      value = {name: name, type: type, args: args}
+      self.validations = value
     end
   end
 
   module InstanceMethods
     def validate!
-      validates_methods = self.methods.select do | method |
-        /validate_/.match(method)
-      end
-      validates_methods.each do | method |
-        # puts method
-        send(method)
+      params = self.class.validations
+      params.each do |param|
+        send("validate_#{param[:type]}", param)
       end
     end
-  end
 
-  def valid?
-    validate!
-    true
-  rescue StandardError => e
-    puts "#{e.message}"
+    def validate_presence(options)
+      name = options[:name]
+      if instance_variable_get("@#{name}".to_sym).nil? \
+        || instance_variable_get("@#{name}".to_sym) == ''
+        raise "#{name} is empty!"
+      end
+    end
+
+    def validate_format(options)
+      name = options[:name]
+      patern = options[:args]
+      unless patern =~ instance_variable_get("@#{name}".to_sym).to_s
+        raise  "#{name} does not match patern!"
+      end
+    end
+
+    def validate_type(options)
+      name = options[:name]
+      type = options[:args]
+      unless type == instance_variable_get("@#{name}".to_sym).class
+        raise  "#{name} does not match type"
+      end
+    end
+
+    def valid?
+      validate!
+      true
+    rescue StandardError => e
+      puts "#{e.message}"
+    end
   end
 end

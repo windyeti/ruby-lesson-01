@@ -1,28 +1,13 @@
 require_relative 'manufacturer/manufacturer'
 require_relative 'instance_counter/instance_counter'
-require_relative 'attr_accessor/attr_accessor'
-require_relative 'validation/validation'
 
 class Train
   include InstanceCounter
   include Manufacturer
-  include AttrAccesssor
-  include Validation
 
-  # TRAIN_NUMBER = /^[a-z0-9]{3}-?[a-z0-9]{2}$/i.freeze
-  # EMPTY_MANUFACTURER_ERROR = "Manufacturer must not be empty!!!".freeze
-  # NOT_CORRECT_NUMBER = "Number not correct!!!".freeze
   NO_ROUTE = "No route!!!".freeze
 
   attr_reader :number, :route, :wagons
-
-  validate :number, :presence
-  validate :number, :type, String
-  validate :number, :format, /^[a-z0-9]{3}-?[a-z0-9]{2}$/i
-
-  validate :manufacturer, :presence
-  validate :manufacturer, :type, String
-  validate :manufacturer, :format, /^[A-Z0-9]{1}[a-z0-9]+$/
 
   # rubocop:disable Style/ClassVars
   @@trains = {}
@@ -53,18 +38,6 @@ class Train
     validate!
     register_instance
   end
-
-  # def valid?
-  #   validate!
-  #   true
-  # rescue StandardError
-  #   false
-  # end
-
-  # def validate!
-  #   raise EMPTY_MANUFACTURER_ERROR if manufacturer.empty?
-  #   raise NOT_CORRECT_NUMBER if number !~ TRAIN_NUMBER
-  # end
 
   def delete_wagon
     @wagons.pop

@@ -25,10 +25,6 @@ class Route
     register_instance
   end
 
-  # def validate!
-  #   raise WRONG_INDEX_STATION if @start_point.nil? || @end_point.nil?
-  # end
-
   def add_station(station)
     @stations.insert(1, station)
   end
